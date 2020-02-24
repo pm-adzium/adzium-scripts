@@ -109,16 +109,17 @@ return
 
 ^c::
 send, ^c
-splitString := StrSplit(Clipboard, "`n", "`n")
+splitString := StrSplit(Clipboard, "`n")
+counter := 1
 return
 
 ^+v::
+filterQuotes()
 ClipboardPaste(splitString[counter])
 if(counter <= splitString.Length()){
 	counter++
 	} else {
 	counter := 1
-	ClipboardPaste(splitString[1])
 }
 return
 
