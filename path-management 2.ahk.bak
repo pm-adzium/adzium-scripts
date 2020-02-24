@@ -13,6 +13,11 @@ return
 partialClipboard := []
 counter := 1
 
+saveShiz(shiz){
+	iniWrite, shiz, settings.ini, settings
+}
+
+
 ClipboardPaste(stuff){
 	tempSave := Clipboard
 	Clipboard := stuff
@@ -102,6 +107,20 @@ send, ^v
 return
 
 
+^c::
+send, ^c
+splitString := StrSplit(Clipboard, "`n", "`n")
+return
 
+^+v::
+msgbox, % splitString[1]
+ClipboardPaste(splitString[counter])
+if(counter <= splitString.Length()){
+	counter++
+	} else {
+	counter := 1
+	ClipboardPaste(splitString[1])
+}
+return
 
 ^!+q::Suspend, toggle

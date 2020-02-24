@@ -54,7 +54,6 @@ SendPath(Mode, CountUp := false){
 }
 
 GuiClose:
-IniWrite,
 ExitApp
 return
 
@@ -108,6 +107,19 @@ send, ^v
 return
 
 
+^c::
+send, ^c
+splitString := StrSplit(Clipboard, "`n", "`n")
+return
 
+^+v::
+ClipboardPaste(splitString[counter])
+if(counter <= splitString.Length()){
+	counter++
+	} else {
+	counter := 1
+	ClipboardPaste(splitString[1])
+}
+return
 
 ^!+q::Suspend, toggle
