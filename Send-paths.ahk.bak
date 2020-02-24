@@ -1,0 +1,29 @@
+#SingleInstance, force
+#IfWinActive ahk_exe Photoshop.exe
+#IfWinActive ahk_exe Illustrator.exe
+F4::
+send, ..\bg\
+return
+
+F3::
+send, ..\psd\
+return
+
+#IfWinActive
+^F3::
+clippedValue := Clipboard
+Loop, parse, clippedValue, " x "
+{
+	if (a_index = 2) {
+		continue
+	}
+	Send, %A_LoopField%{Tab}
+}
+
+~^c::
+sleep, 10
+String := Clipboard
+Template := """"
+String := RegExReplace(String, Template)
+Clipboard := String
+return

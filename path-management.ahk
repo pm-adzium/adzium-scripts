@@ -1,0 +1,56 @@
+#Persistent
+#SingleInstance, force
+
+
+Gui, Add, Edit, x12 y19 w140 h30 vBg, Background Template
+Gui, Add, Edit, x12 y59 w140 h30 vPic , Picture Template
+Gui, Add, Edit, x12 y99 w140 h30 vPath , Path
+Gui, Add, Edit, x12 y139 w140 h30 vIndex , Index
+Gui, Add, Button, x12 y179 w140 h30 gSubmit , Save Paths Config
+Gui, Show, w171 h220, +++
+return
+
+UpdateIndex(){
+	global Index
+GuiControl,, Index, %Index%
+return
+}
+
+IncreaseIndex(Update){
+	global Index
+	if Index is not number
+	{
+		Index := 1
+	}
+	if (Update = true)
+	{
+		Return Index++
+	}
+	else Return Index
+}
+
+SendPath(Mode){
+	global
+	PicPath := "psd`\" . Pic
+	BgPath := "bg`\" . Bg
+	SendInput, % Path . "`\" . (Mode = "Pic" ? PicPath : BgPath) . IncreaseIndex((Mode = "Pic" ? true:false)) . (Mode = "BG" ? "`.`*" : "")
+}
+
+GuiClose:
+ExitApp
+return
+
+Submit:
+Gui, Submit, NoHide
+return
+
+
+$Numpad1::
+SendPath("Pic")
+UpdateIndex()
+return
+
+$Numpad2::
+SendPath("BG")
+UpdateIndex()
+return

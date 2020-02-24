@@ -1,0 +1,22 @@
+#SingleInstance, force
+
+
+^F3::
+clippedValue := Clipboard
+Loop, parse, clippedValue, " x "
+{
+	if (a_index = 2) {
+		continue
+	}
+	Send, %A_LoopField%{Tab}
+}
+
+~^c::
+sleep, 10
+String := Clipboard
+Template := """"
+String := RegExReplace(String, Template)
+Clipboard := String
+return
+
+^!+q::Suspend, toggle
