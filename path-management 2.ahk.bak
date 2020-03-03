@@ -10,7 +10,6 @@ Gui, Add, Button, x12 y179 w140 h30 gSubmit , Save Paths Config
 Gui, Show, w171 h220, +++
 return
 
-partialClipboard := []
 counter := 1
 
 saveShiz(shiz){
@@ -94,27 +93,26 @@ Loop, parse, clippedValue, " x "
 
 filterQuotes(){
 	String := Clipboard
-	Template := """"
-	String := RegExReplace(String, Template)
+	Template := `"
+	String := StrReplace(Template, String)
 	sleep, 10
 	Clipboard := String
 }
 
 
-^v::
-filterQuotes()
-send, ^v
-return
+;^v::
+;send, ^v
+;return
 
 
 ^c::
 send, ^c
-splitString := StrSplit(Clipboard, "`n", "`n")
+filterQuotes()
+splitString := StrSplit(Clipboard, "`n")
 counter := 1
 return
 
 ^+v::
-filterQuotes()
 ClipboardPaste(splitString[counter])
 if(counter <= splitString.Length()){
 	counter++
