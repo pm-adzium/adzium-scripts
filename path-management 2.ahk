@@ -1,8 +1,12 @@
 #Persistent
 #SingleInstance, force
+#InstallKeybdHook
 #UseHook
+#MaxThreadsPerHotkey, 2
 
-Gui, Add, Edit, x12 y19 w140 h30 vBg, Background Template
+counter := 1
+
+Gui, Add, Edit, x12 y19 w140 h30 vBg, Bg
 Gui, Add, Edit, x12 y59 w140 h30 vPic , Picture Template
 Gui, Add, Edit, x12 y99 w140 h30 vPath , Path
 Gui, Add, Edit, x12 y139 w140 h30 vIndex , Index
@@ -10,12 +14,15 @@ Gui, Add, Button, x12 y179 w140 h30 gSubmit , Save Paths Config
 Gui, Show, w171 h220, +++
 return
 
-counter := 1
+
 
 saveShiz(shiz){
 	iniWrite, shiz, settings.ini, settings
 }
 
+testArray(array){
+	
+}
 
 ClipboardPaste(stuff){
 	tempSave := Clipboard
@@ -105,16 +112,20 @@ filterQuotes(){
 ;return
 
 
-^c::
-send, ^c
-filterQuotes()
+~^c::
+splitString := ""
 splitString := StrSplit(Clipboard, "`n")
+sleep, 100
+;testing purposes
+;msgbox, % "array length: " . splitString.Length() . "counter: " . counter
 counter := 1
 return
 
 ^+v::
 ClipboardPaste(splitString[counter])
-if(counter <= splitString.Length()){
+;testing purposes
+;msgbox, % "array length: " . splitString.Length() . "counter: " . counter
+if(counter < splitString.Length()){
 	counter++
 	} else {
 	counter := 1
