@@ -3,6 +3,7 @@
 #InstallKeybdHook
 #UseHook
 #MaxThreadsPerHotkey, 2
+#IfWinNotActive, ahk_exe TOTALCMD.EXE
 
 counter := 1
 
@@ -28,6 +29,7 @@ ClipboardPaste(stuff){
 	Clipboard := stuff
 	sleep, 30
 	send, ^v
+	sleep, 30
 	Clipboard := tempSave
 }
 
@@ -120,7 +122,7 @@ sleep, 100
 counter := 1
 return
 
-F4::
++^v::
 ClipboardPaste(splitString[counter])
 ;testing purposes
 ;msgbox, % "array length: " . splitString.Length() . "counter: " . counter

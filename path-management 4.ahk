@@ -5,7 +5,7 @@
 #MaxThreadsPerHotkey, 2
 
 
-counter := 1
+
 
 Gui, Add, Edit, x12 y19 w140 h30 vBg, Bg
 Gui, Add, Edit, x12 y59 w140 h30 vPic , Picture Template
@@ -18,6 +18,8 @@ return
 part1 := ""
 part2 := ""
 
+counter := 1
+
 saveShiz(shiz){
 	iniWrite, shiz, settings.ini, settings
 }
@@ -29,7 +31,6 @@ ClipboardPaste(stuff){
 	Clipboard := stuff
 	sleep, 30
 	send, ^v
-	sleep, 30
 	Clipboard := tempSave
 }
 
@@ -123,7 +124,7 @@ counter := 1
 return
 
 +^v::
-ClipboardPaste(splitString[counter])
+send, % splitString[counter]
 ;testing purposes
 ;msgbox, % "array length: " . splitString.Length() . "counter: " . counter
 if(counter < splitString.Length() ){
