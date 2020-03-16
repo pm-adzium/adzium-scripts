@@ -99,15 +99,16 @@ Loop, parse, clippedValue, " x "
 	}
 	Send, %A_LoopField%{Tab}
 }
+
 return
 
-
-
-
-;^v::
-;send, ^v
-;return
-
+~^+t::
+if (A_PriorHotkey != "~^+t" || A_TimeSincePriorHotkey > 300){
+	KeyWait, t
+	return
+}
+ClipboardPaste("Templateless")
+return
 
 ~^c::
 splitString := ""

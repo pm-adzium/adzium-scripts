@@ -113,6 +113,7 @@ filterQuotes(){
 
 
 ~^c::
+splitString := ""
 splitString := StrSplit(Clipboard, "`n")
 sleep, 100
 ;testing purposes

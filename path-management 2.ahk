@@ -122,7 +122,7 @@ counter := 1
 return
 
 ^+v::
-ClipboardPaste(splitString[counter])
+SendInput, splitString[counter]
 ;testing purposes
 ;msgbox, % "array length: " . splitString.Length() . "counter: " . counter
 if(counter < splitString.Length()){
