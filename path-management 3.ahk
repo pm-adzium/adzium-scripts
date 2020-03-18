@@ -110,6 +110,14 @@ if (A_PriorHotkey != "~^+t" || A_TimeSincePriorHotkey > 300){
 ClipboardPaste("Templateless")
 return
 
+~^+p::
+if (A_PriorHotkey != "~^+p" || A_TimeSincePriorHotkey > 300){
+	KeyWait, p
+	return
+}
+ClipboardPaste(Path)
+return
+
 ~^c::
 splitString := ""
 KeyWait, c

@@ -102,8 +102,8 @@ Loop, parse, clippedValue, " x "
 
 return
 
-~^t::
-if (A_PriorHotkey != "~^t" || A_TimeSincePriorHotkey > 300){
+~^+t::
+if (A_PriorHotkey != "~^+t" || A_TimeSincePriorHotkey > 300){
 	KeyWait, t
 	return
 }
