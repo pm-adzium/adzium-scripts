@@ -6,13 +6,15 @@
 ;\  /\  /| |_\ \| |___   | |          | |/ / \ \_/ /\  /\  /| |\  || |____\ \_/ /| | | || |/ / 
 ; \/  \/  \____/\____/   \_/          |___/   \___/  \/  \/ \_| \_/\_____/ \___/ \_| |_/|___/  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   
-wget($TEXT = "Downloading...", $URL = "", $TARGET = "", $RETRY = "3", $POSITION = "FALSE", $POSX = "", $POSY = "")
+wget($TEXT = "Downloading...", $URL = "", $TARGET = "", $RETRY = "3", $POSITION = "FALSE", $POSX = "", $POSY = "", $ERRORCLBCK = "")
 {
 	; Maxrate and other parameters can be added to wget
 	; $MAXRATE = 0k 	; --limit-rate=%$MAXRATE%
 	; must insert a ^ in front of & on urls because amperstand is a console operator, see next line.
 	StringReplace, $URL, $URL, "&", "^&", All	
-	$CMD = wget --output-file "%$TARGET%.status" -O "%$TARGET%" --progress=bar:force --no-cache --tries=%$RETRY% --retry-connrefused --waitretry=1 "%$URL%" --no-check-certificate --auth-no-challenge
+	
+	$CMD = wget --progress=bar:force --no-cache  --retry-connrefused --tries=%$RETRY% --waitretry=1 "%$URL%" --no-check-certificate --auth-no-challenge --output-file "%$TARGET%.status" -O "%$TARGET%"
+
 	Run, %$CMD%, , Hide, $wget_pid
 	Process, Exist, %$wget_pid%
 	
@@ -66,9 +68,9 @@ wget($TEXT = "Downloading...", $URL = "", $TARGET = "", $RETRY = "3", $POSITION 
 	}
 	else
 	{
-		MsgBox, , ERROR, There was a problem accessing the server.`nCheck status file for details., 60
-		FileDelete, %$TARGET%.status
-		FileDelete, %$TARGET%
+		;MsgBox, , ERROR, There was a problem accessing the server.`nCheck status file for details., 60
+		;FileDelete, %$TARGET%.status
+		;FileDelete, %$TARGET%
 		Return false
 	}
 }

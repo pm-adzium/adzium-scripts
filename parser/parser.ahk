@@ -17,12 +17,10 @@ savePic(message, url, name, output){
 	;msgbox, targetPath is %targetPath%
 	
 	messageText := "parsing file " . message
-	;wget(messageText, url, targetPath, "0")
+	wget(messageText, url, targetPath, "0")
 	
 	
-	if(errorlevel){
-		msgbox, % "ERROR WITH THIS BITCH " . targetPath
-	}
+	
 }
 
 
