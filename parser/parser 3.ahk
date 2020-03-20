@@ -15,6 +15,12 @@ update(field, text){
 	
 }
 
+validate(input){
+	input := RegExReplace(input, "[:\\/]", "SCHAR")
+	return input
+	
+}
+
 createTXT(text, location){
 	;~ msgbox, creating textfile at %location%
 	
@@ -70,9 +76,7 @@ GuiClose:
 ExitApp
 
 
-;~ ^q::
-;~ savePic("https://images.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png", "test", mainDir)
-;~ return
+
 Runparse:
 +^t::
 Gui, submit, NoHide
@@ -89,6 +93,7 @@ loop, read, %parsingFile%
 {
 	
 	dataCollector.pictureLinks := []
+	dataCollector.placementText := ""
 	
 	lineNum := A_Index
 	loop, parse, A_LoopReadLine, CSV
@@ -98,6 +103,7 @@ loop, read, %parsingFile%
 			
 			fieldNum := A_Index
 			field := A_LoopField
+			
 			if(field != "" && !(field ~= "i)^[xõ]mood")) {
 				
 				switch true{
@@ -109,6 +115,7 @@ loop, read, %parsingFile%
 					
 				
 					case (fieldNum = 3):
+					field := validate(field)
 					dataCollector.taskFolder := field
 					
 					;MsgBox, % "Folder " . dataCollector.taskFolder
@@ -120,7 +127,7 @@ loop, read, %parsingFile%
 					;MsgBox, % "Filename " . dataCollector.fileName
 					
 					case (fieldNum = 5):
-					
+					field := validate(field)
 					dataCollector.articleName := field
 					
 					;MsgBox, % "Article " . dataCollector.articleName . ""
@@ -149,7 +156,9 @@ loop, read, %parsingFile%
 							}
 					
 						;~ add textfile
-						createTXT(dataCollector.placementText, subfolder)
+						if(dataCollector.placementText != ""){
+							createTXT(dataCollector.placementText, subfolder)
+						}
 						
 						uCounter := 0
 				

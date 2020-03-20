@@ -31,6 +31,7 @@ ClipboardPaste(stuff){
 	send, ^v
 	sleep, 30
 	Clipboard := tempSave
+	return
 }
 
 UpdateIndexGUI(){
@@ -59,6 +60,7 @@ SendPath(Mode, CountUp := false){
 	BgPath := "bg`\" . Bg
 	pathComposite := Path . "`\" . (Mode = "Pic" ? PicPath : BgPath) . IncreaseIndex((CountUp = true ? true:false)) . (Mode = "BG" ? "`.`*" : "`.psd")
 	ClipboardPaste(pathComposite)
+	return
 }
 
 GuiClose:
@@ -122,9 +124,15 @@ return
 splitString := ""
 KeyWait, c
 KeyWait, Control
-splitString := StrSplit(Clipboard, "`n")
+unsplit := Clipboard
+
+replacedStr := StrReplace(unsplit, "<BR>", "@")
+splitString := StrSplit(replacedStr, "@")
+;~ MsgBox, replaced str: %replacedStr%
 part1 := splitString[1]
 part2 := splitString[2]
+
+
 sleep, 100
 ;testing purposes
 ;msgbox, % "array length: " . splitString.Length() . "counter: " . counter
