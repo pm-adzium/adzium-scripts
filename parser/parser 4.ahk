@@ -63,18 +63,22 @@ savePic(message, url, name, output){
 	
 }
 
-;~ Gui, Add, Button, x12 y269 w460 h40 , PARSE DAT SHIT
-;~ Gui, Add, Edit, x12 y189 w310 h30 , parsing-debug.csv
-;~ Gui, Add, Edit, x12 y229 w310 h30 , c:\Users\Sage\Desktop\adzium scripts\parser\testDir2
-;~ Gui, Add, Button, x332 y189 w140 h30 , Button
-;~ Gui, Add, Button, x332 y229 w140 h30 , Button
-;~ ; Generated using SmartGUI Creator for SciTE
-;~ Gui, Show, w484 h366, Untitled GUI
-;~ return
-
-;~ GuiClose:
-;~ ExitApp
-
+getPathDetails(path){
+	msgbox, function called
+	
+	SplitPath, path, file, dir, ext, name
+	fileDetails := {"path":path
+		, "file": file
+		, "dir": dir
+		, "ext": ext
+		, "name": name}
+	;~ fileDetails.fileDetails := fd
+	for k, v in fileDetails{
+		if (v != ""){
+			msgbox, file details: %k% : %v%
+		}
+	}
+}
 
 Gui, Add, Text, x12 y19 w450 h80 vCurrentFile , File Status
 Gui, Add, Text, x12 y109 w450 h80 vFileDetails , File Details
@@ -103,14 +107,21 @@ Runparse:
 ;~ +^t::
 Gui, submit, NoHide
 
-dataCollector := {}
-dataCollector.state := ""
-dataCollector.taskFolder := ""
-dataCollector.fileName := ""
-dataCollector.articleName := ""
-dataCollector.placementText := ""
-pictureLinks.pictureLinks := []
+dataCollector 
+:= {"state":""
+	, "taskFolder":""
+	, "fileName":""
+	, "articleName":""
+	, "placementText":""
+	, "pictureLinks":[]}
 
+
+;~ FileRead, OriginalFileContents, %parsingFile%
+;~ getPathDetails(parsingFile)
+;~ FileExist, %
+;~ FileAppend, %CoreFile%, 
+
+if(true){
 loop, read, %parsingFile%
 {
 	
@@ -215,4 +226,4 @@ loop, read, %parsingFile%
 	update("CurrentFile", "done")
 }	
 return
-
+}
