@@ -16,7 +16,9 @@ update(field, text){
 }
 
 validate(input){
-	input := RegExReplace(input, "[:\\/]", "SCHAR")
+	rgx := "[\\\/\*<>:?|""]"
+	;~ rgx := "[:\\/><`"\|\*\?]"
+	input := RegExReplace(input, rgx, " ")
 	return input
 	
 }
@@ -102,7 +104,7 @@ loop, read, %parsingFile%
 			
 			
 			fieldNum := A_Index
-			field := validate(A_LoopField)
+			field := A_LoopField
 			
 			if(field != "" && !(field ~= "i)^[xõ]mood")) {
 				
@@ -115,6 +117,7 @@ loop, read, %parsingFile%
 					
 				
 					case (fieldNum = 3):
+					field := validate(field)
 					dataCollector.taskFolder := field
 					
 					;MsgBox, % "Folder " . dataCollector.taskFolder
@@ -126,7 +129,7 @@ loop, read, %parsingFile%
 					;MsgBox, % "Filename " . dataCollector.fileName
 					
 					case (fieldNum = 5):
-					
+					field := validate(field)
 					dataCollector.articleName := field
 					
 					;MsgBox, % "Article " . dataCollector.articleName . ""

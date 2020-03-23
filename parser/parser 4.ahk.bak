@@ -63,24 +63,44 @@ savePic(message, url, name, output){
 	
 }
 
+;~ Gui, Add, Button, x12 y269 w460 h40 , PARSE DAT SHIT
+;~ Gui, Add, Edit, x12 y189 w310 h30 , parsing-debug.csv
+;~ Gui, Add, Edit, x12 y229 w310 h30 , c:\Users\Sage\Desktop\adzium scripts\parser\testDir2
+;~ Gui, Add, Button, x332 y189 w140 h30 , Button
+;~ Gui, Add, Button, x332 y229 w140 h30 , Button
+;~ ; Generated using SmartGUI Creator for SciTE
+;~ Gui, Show, w484 h366, Untitled GUI
+;~ return
 
+;~ GuiClose:
+;~ ExitApp
 
 
 Gui, Add, Text, x12 y19 w450 h80 vCurrentFile , File Status
 Gui, Add, Text, x12 y109 w450 h80 vFileDetails , File Details
-Gui, Add, Button, x12 y289 w450 h40 gRunparse , PARSE DAT SHIT
-Gui, Add, Edit, x12 y199 w450 h30 vparsingFile, %parsingFile%
-Gui, Add, Edit, x12 y239 w450 h30 vMainDir,  %mainDir% 
+Gui, Add, Edit, x12 y190 w310 r1 vparsingFile, %parsingFile%
+Gui, Add, Edit, x12 y230 w310 r1 vMainDir,  %mainDir% 
+Gui, Add, Button, x12 y270 w460 h40 gRunparse , PARSE DAT SHIT
+Gui, Add, Button, x332 y189 w140 r1 gUpdateSource , Source File
+Gui, Add, Button, x332 y229 w140 r1 gUpdateOutput, Output Directory
 Gui, Show, w490 h372, Super parser pre-pre-pre alpha version
 return
 
 GuiClose:
 ExitApp
 
+UpdateSource:
+FileSelectFile, parsingFile
+update("parsingFile", parsingFile)
+return
 
+updateOutput:
+FileSelectFolder, mainDir
+update("mainDir", mainDir)
+return
 
 Runparse:
-+^t::
+;~ +^t::
 Gui, submit, NoHide
 
 dataCollector := {}
