@@ -1,18 +1,22 @@
 #SingleInstance, force
-#Include, wget.ahk
+#include wget.ahk
+FileEncoding, UTF-8
 
 mainDir := "c:\Users\Sage\Desktop\adzium scripts\parser\testDir2"
-parsingFile := "parsing-debug.csv"
-
-
-
-
-
+parsingFile := "c:\Users\Sage\Desktop\adzium scripts\parser\csvs\PARSE THIS.csv"
 
 update(field, text){
 	
 		guiControl,,%field%, %text%
 	
+}
+
+readObj(obj){
+	combined := ""
+	for k, v in obj{
+		combined .= "key: " . k "value: " v
+	}
+	return combined
 }
 
 validate(input){
@@ -54,6 +58,8 @@ savePic(message, url, name, output){
 		;createError(, errorLocation)
 		
 		;run, explorer.exe "%output%"
+		errorLog := readObj(e)
+		FileAppend, %errorLog%, log.txt
 		
 		return false
 		
@@ -63,23 +69,28 @@ savePic(message, url, name, output){
 	
 }
 
-getPathDetails(path){
-	msgbox, function called
-	
-	SplitPath, path, file, dir, ext, name
-	fileDetails := {"path":path
+fileReadDetails(inputfile){
+	FileRead, content, %inputfile%
+	SplitPath, inputfile, file, dir, ext, name
+	fileDetails := {"path": path
 		, "file": file
 		, "dir": dir
 		, "ext": ext
-		, "name": name}
-	;~ fileDetails.fileDetails := fd
-	for k, v in fileDetails{
-		if (v != ""){
-			msgbox, file details: %k% : %v%
-		}
-	}
+		, "name": name
+		, "content": content
+		, "filepath": dir . "\" . file}
+	
+	;~ for k, v in fileDetails{
+		;~ if (v != ""){
+			;~ msgbox, file details: %k% : %v%
+		;~ }
+	;~ }
+	return fileDetails
 }
 
+
+
+;~ GUI STUFF
 Gui, Add, Text, x12 y19 w450 h80 vCurrentFile , File Status
 Gui, Add, Text, x12 y109 w450 h80 vFileDetails , File Details
 Gui, Add, Edit, x12 y190 w310 r1 vparsingFile, %parsingFile%
@@ -89,6 +100,7 @@ Gui, Add, Button, x332 y189 w140 r1 gUpdateSource , Source File
 Gui, Add, Button, x332 y229 w140 r1 gUpdateOutput, Output Directory
 Gui, Show, w490 h372, Super parser pre-pre alpha version
 return
+;~ ---
 
 GuiClose:
 ExitApp
@@ -103,25 +115,24 @@ FileSelectFolder, mainDir
 update("mainDir", mainDir)
 return
 
+
+
 Runparse:
-;~ +^t::
+
 Gui, submit, NoHide
 
 dataCollector 
-:= {"state":""
-	, "taskFolder":""
-	, "fileName":""
-	, "articleName":""
-	, "placementText":""
-	, "pictureLinks":[]}
+:= {"state": ""
+	, "taskFolder": ""
+	, "fileName": ""
+	, "articleName": ""
+	, "placementText": ""
+	, "pictureLinks": []}
 
 
-;~ FileRead, OriginalFileContents, %parsingFile%
-;~ getPathDetails(parsingFile)
-;~ FileExist, %
-;~ FileAppend, %CoreFile%, 
 
-if(true){
+
+
 loop, read, %parsingFile%
 {
 	
@@ -226,4 +237,4 @@ loop, read, %parsingFile%
 	update("CurrentFile", "done")
 }	
 return
-}
+
