@@ -2,13 +2,21 @@
 #include wget.ahk
 FileEncoding, UTF-8
 
-mainDir := "c:\Users\Sage\Desktop\adzium scripts\parser\testDir2"
-parsingFile := "c:\Users\Sage\Desktop\adzium scripts\parser\csvs\PARSE THIS.csv"
+mainDir := "c:\Users\Sage\Desktop\parser tester"
+parsingFile := "c:\Users\Sage\Desktop\adzium scripts\parser\csvs\PARSING - test articles.csv"
 
 update(field, text){
 	
 		guiControl,,%field%, %text%
 	
+}
+
+readObj(obj){
+	combined := ""
+	for k, v in obj{
+		combined .= k . ": " . v . "`n"
+	}
+	return combined
 }
 
 validate(input){
@@ -32,9 +40,9 @@ createTXT(text, location){
 
 savePic(message, url, name, output){
 	RegExMatch(url, "\w+$", ext)
-	
+	;~ MsgBox, %output%
 	fileName := name . "." . ext
-	update("CurrentFile", "Working on" fileName "`n at " url)
+	update("CurrentFile", "Working on`n" fileName "`n at " url)
 		
 	targetPath := output . "\" . fileName
 	;msgbox, targetPath is %targetPath%
@@ -44,13 +52,14 @@ savePic(message, url, name, output){
 		
 		return true
 	} catch e {
-				
-		;errorLocation = %output%\%name%.txt
-		
-		;createError(, errorLocation)
-		
-		;run, explorer.exe "%output%"
-		
+
+		errorLog := readObj(e)
+		errorLog .= "Couldn't download file: " . fileName . "from" . url
+		FileAppend, %errorLog%, log.txt
+		outputDir := """" . output . """"
+		;~ msgbox, outputdir: %outputDir%
+		;~ run, %comspec% /k cd %outputDir% 
+
 		return false
 		
 	}
@@ -150,7 +159,7 @@ loop, read, %parsingFile%
 				
 					case (fieldNum = 3):
 					field := validate(field)
-					dataCollector.taskFolder := field
+					dataCollector.taskFolder := trim(field)
 					
 					;MsgBox, % "Folder " . dataCollector.taskFolder
 					
@@ -162,7 +171,7 @@ loop, read, %parsingFile%
 					
 					case (fieldNum = 5):
 					field := validate(field)
-					dataCollector.articleName := field
+					dataCollector.articleName := trim(field)
 					
 					;MsgBox, % "Article " . dataCollector.articleName . ""
 					
@@ -184,9 +193,20 @@ loop, read, %parsingFile%
 						
 						;~ create subfolders if necessary
 						
+						
+						
 						subfolder := mainDir . "\" . dataCollector.articleName . "\" . dataCollector.taskFolder
+						;~ msgbox, subfolder: %subfolder%
+						
+						
+						
 							if (!fileExist(subfolder)){
 								FileCreateDir, %subfolder%
+								if (errorLevel){
+									MsgBox, failed to create folder %subfolder%
+									break
+								}
+								
 							}
 					
 						;~ add textfile
@@ -202,8 +222,9 @@ loop, read, %parsingFile%
 							;MsgBox, % "Picture Link" . k . " = " v
 							picFile := dataCollector.fileName . "___" . uCounter++
 							;intermFile := dataCollector.articleName . "\" . dataCollector.folderName
-							;~ msgbox, %intermFile%
+
 							savePic(picFile, v, picFile, subfolder)
+							
 							
 						}
 						
